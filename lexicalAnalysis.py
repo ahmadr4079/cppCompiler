@@ -72,16 +72,16 @@ class LexicalAnalysis:
     
     def state_9(self,*argv):
         if argv:
-            for item in argv:
-                print("'<id,{}>'".format(item))
+            self.identifiers = argv[0]
         char = self.fp.nextChar()
         if char == 'eof':
             print("'<eof>'")
         elif re.search('[A-Z]|[a-z]|[0-9]',char):
-            print("'<id,{}>'".format(char))
+            self.identifiers = self.identifiers + char
             return LexicalAnalysis.switchState(self,9)
         else:
             self.fp.previousChar()
+            print("'<identifiers,{}>'".format(self.identifiers))
             return LexicalAnalysis.switchState(self,0)
     
     def state_22(self):
