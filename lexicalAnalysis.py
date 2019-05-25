@@ -20,8 +20,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self,6)
         elif char == ' ':
             return LexicalAnalysis.switchState(self,22)
-        # elif re.search('[A-Z]|[a-z]',char):
-        #     return LexicalAnalysis.switchState(self,9,char)
+        elif re.search('[A-Z]|[a-z]',char):
+            return LexicalAnalysis.switchState(self,9,char)
         
     def state_1(self):
         char = self.fp.nextChar()
@@ -70,19 +70,19 @@ class LexicalAnalysis:
         print("'<relop,GT>'")
         return LexicalAnalysis.switchState(self,0)
     
-    # def state_9(self,*argv):
-    #     if argv:
-    #         for item in argv:
-    #             print("'<id,{}>'".format(item))
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         print("'<eof>'")
-    #     elif re.search('[A-Z]|[a-z]|[0-9]',char):
-    #         print("'<id,{}>'".format(char))
-    #         return LexicalAnalysis.switchState(self,9)
-    #     else:
-    #         self.fp.previousChar()
-    #         return LexicalAnalysis.switchState(self,0)
+    def state_9(self,*argv):
+        if argv:
+            for item in argv:
+                print("'<id,{}>'".format(item))
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<eof>'")
+        elif re.search('[A-Z]|[a-z]|[0-9]',char):
+            print("'<id,{}>'".format(char))
+            return LexicalAnalysis.switchState(self,9)
+        else:
+            self.fp.previousChar()
+            return LexicalAnalysis.switchState(self,0)
     
     def state_22(self):
         char = self.fp.nextChar()
