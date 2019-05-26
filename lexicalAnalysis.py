@@ -1,5 +1,5 @@
 import re
-
+import pandas as pd
 class LexicalAnalysis:
     def __init__(self,file):
         self.fp = file
@@ -71,20 +71,33 @@ class LexicalAnalysis:
         self.fp.previousChar()
         print("'<relop,GT>'")
         return LexicalAnalysis.switchState(self,0)
+
+    def checkKeyword(self):
+        string = self.identifiers
+        tokenDataFrame = pd.read_csv('Token.csv',index_col=0)
+        for item,value in tokenDataFrame.iterrows():
+            if value['tokenName'] == 'keyword' and value['attributeValue'] == string:
+                return value['id']
     
     def state_9(self,*argv):
         if argv:
             self.identifiers = argv[0]
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<identifiers,{}>'".format(self.identifiers))
+            if LexicalAnalysis.checkKeyword(self):
+                print("'<keyword,{}>'".format(self.identifiers))
+            else:
+                print("'<identifiers,{}>'".format(self.identifiers))
             print("'<eof>'")
         elif re.search('[A-Z]|[a-z]|[0-9]',char):
             self.identifiers = self.identifiers + char
             return LexicalAnalysis.switchState(self,9)
         else:
             self.fp.previousChar()
-            print("'<identifiers,{}>'".format(self.identifiers))
+            if LexicalAnalysis.checkKeyword(self):
+                print("'<keyword,{}>'".format(self.identifiers))
+            else:
+                print("'<identifiers,{}>'".format(self.identifiers))
             return LexicalAnalysis.switchState(self,0)
     
     def state_22(self):
