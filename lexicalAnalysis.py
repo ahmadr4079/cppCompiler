@@ -20,6 +20,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self,6)
         elif char == ' ':
             return LexicalAnalysis.switchState(self,22)
+        elif char == ';':
+            return LexicalAnalysis.switchState(self,25)
         elif re.search('[A-Z]|[a-z]',char):
             return LexicalAnalysis.switchState(self,9,char)
         
@@ -75,6 +77,7 @@ class LexicalAnalysis:
             self.identifiers = argv[0]
         char = self.fp.nextChar()
         if char == 'eof':
+            print("'<identifiers,{}>'".format(self.identifiers))
             print("'<eof>'")
         elif re.search('[A-Z]|[a-z]|[0-9]',char):
             self.identifiers = self.identifiers + char
@@ -87,10 +90,21 @@ class LexicalAnalysis:
     def state_22(self):
         char = self.fp.nextChar()
         if char == 'eof':
+            print("'<delim>'")
             print("'<eof>'")
         elif char == ' ':
             return LexicalAnalysis.switchState(self,22)
         else:
             print("'<delim>'")
+            self.fp.previousChar()
+            return LexicalAnalysis.switchState(self,0)
+    
+    def state_25(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,semicolon>'")
+            print("'<eof>'")
+        else:
+            print("'<punctuation,semicolon>'")
             self.fp.previousChar()
             return LexicalAnalysis.switchState(self,0)
