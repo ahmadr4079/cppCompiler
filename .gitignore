@@ -104,10 +104,11 @@ venv.bak/
 .mypy_cache/
 
 #codes txt file
+mainCode.txt
 code.txt
 
 #token csv
-Token.csv
+token.csv
 
 #c++ keywords file
 cPlusKeyword.txt
