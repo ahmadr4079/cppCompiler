@@ -26,6 +26,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self,25)
         elif char == '(':
             return LexicalAnalysis.switchState(self,26)
+        elif char == ')':
+            return LexicalAnalysis.switchState(self,27)
         elif re.search('[A-Z]|[a-z]',char):
             return LexicalAnalysis.switchState(self,9,char)
         
@@ -154,5 +156,15 @@ class LexicalAnalysis:
             print("'<eof>'")
         else:
             print("'<punctuation,leftparantheses>'")
+            self.fp.previousChar()
+            return LexicalAnalysis.switchState(self,0)
+    
+    def state_27(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,rightparantheses>'")
+            print("'<eof>'")
+        else:
+            print("'<punctuation,rightparantheses>'")
             self.fp.previousChar()
             return LexicalAnalysis.switchState(self,0)
