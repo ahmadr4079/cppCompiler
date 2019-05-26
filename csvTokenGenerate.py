@@ -12,7 +12,7 @@ def generateTokenCsvFile():
         initialData = []
         keywordFile = open('cPlusKeyword.txt','r')
         for item in keywordFile:
-            initialData.append([uuid1(),'keyword',item])
+            initialData.append([uuid1(),'keyword',item.split('\n')[0]])
         keywordFile.close()
 
         dataFrameToken = pd.DataFrame(data=initialData,columns=['id','tokenName','attributeValue'])
@@ -23,7 +23,7 @@ def generateTokenCsvFile():
         initialData = []
         keywordFile = open('cPlusKeyword.txt','r')
         for item in keywordFile:
-            initialData.append([uuid1(),'keyword',item])
+            initialData.append([uuid1(),'keyword',item.split('\n')[0]])
         keywordFile.close()
 
         dataFrameToken = pd.DataFrame(data=initialData,columns=['id','tokenName','attributeValue'])
