@@ -503,9 +503,16 @@ class LexicalAnalysis:
         char = self.fp.nextChar()
         if char == 'eof':
             print("'<number,{}>'".format(self.number))
+            print("'<eof>'")
         elif re.search('[0-9]',char):
             self.number = self.number + char
             return LexicalAnalysis.switchState(self,62)
+        elif char == '.':
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self,64)
+        elif char == 'E':
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self,66)
         else:
             return LexicalAnalysis.switchState(self,63)
     
@@ -513,5 +520,67 @@ class LexicalAnalysis:
         self.fp.previousChar()
         print("'<number,{}>'".format(self.number))
         return LexicalAnalysis.switchState(self, 0)
+    
+    def state_64(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<number,{}>'".format(self.number))
+            print("'<eof>'")
+        elif re.search('[0-9]',char):
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 65)
+        else:
+            return LexicalAnalysis.switchState(self, 63)
+    
+    def state_65(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<number,{}>'".format(self.number))
+            print("'<eof>'")
+        elif re.search('[0-9]',char):
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 65)
+        elif char == 'E':
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 66)
+        else:
+            return LexicalAnalysis.switchState(self, 63)
+
+    def state_66(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<number,{}>'".format(self.number))
+            print("'<eof>'")
+        elif char == '+' or char == '-':
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 67)
+        elif re.search('[0-9]',char):
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 68)
+        else:
+            return LexicalAnalysis.switchState(self, 63)
+
+    def state_67(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<number,{}>'".format(self.number))
+            print("'<eof>'")
+        elif re.search('[0-9]',char):
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 68)
+        else:
+            return LexicalAnalysis.switchState(self, 63)
+
+    def state_68(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<number,{}>'".format(self.number))
+            print("'<eof>'")
+        elif re.search('[0-9]',char):
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self, 68)
+        else:
+            return LexicalAnalysis.switchState(self, 63)
+
 
 
