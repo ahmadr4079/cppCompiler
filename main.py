@@ -7,5 +7,6 @@ generateTokenCsvFile()
 file = FileScroller('mainCode.txt')
 x = LexicalAnalysis(file)
 x.switchState(0)
-print(x.tokens)
+for item in x.tokens:
+    print(item)
 file.closeFile()
