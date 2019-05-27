@@ -447,7 +447,7 @@ class LexicalAnalysis:
         string = self.identifiers
         tokenDataFrame = pd.read_csv('token.csv', index_col=0)
         for item, value in tokenDataFrame.iterrows():
-            if value['tokenName'] == 'keyword' and value['attributeValue'] == string:
+            if value['attributeValue'] == string:
                 return value['id'], value['tokenName'], value['attributeValue']
         return None, None, None
 
