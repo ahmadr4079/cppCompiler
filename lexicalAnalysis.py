@@ -55,8 +55,10 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 56)
         elif char == '}':
             return LexicalAnalysis.switchState(self, 58)
-        # elif re.search('[A-Z]|[a-z]', char):
-        #     return LexicalAnalysis.switchState(self, 9, char)
+        elif char == '\n':
+            return LexicalAnalysis.switchState(self, 0)
+        elif re.search('[A-Z]|[a-z]', char):
+            return LexicalAnalysis.switchState(self, 60, char)
 
     def state_1(self):
         char = self.fp.nextChar()
@@ -437,57 +439,60 @@ class LexicalAnalysis:
         return LexicalAnalysis.switchState(self, 0)
 
     
-        
+    def checkToken(self):
+        string = self.identifiers
+        tokenDataFrame = pd.read_csv('token.csv', index_col=0)
+        for item, value in tokenDataFrame.iterrows():
+            if value['tokenName'] == 'keyword' and value['attributeValue'] == string:
+                return value['id'], value['tokenName'], value['attributeValue']
+        return None, None, None
+
+    def addIdentifiers(self):
+        string = self.identifiers
+        tokenDataFrame = pd.read_csv('token.csv', index_col=0)
+        tokenDataFrame = tokenDataFrame.append({'id': uuid1(),
+                                                'tokenName': 'identifier',
+                                                'attributeValue': string},
+                                               ignore_index=True)
+        tokenDataFrame.to_csv('token.csv')
+        return True
 
 
-    # def checkToken(self):
-    #     string = self.identifiers
-    #     tokenDataFrame = pd.read_csv('token.csv', index_col=0)
-    #     for item, value in tokenDataFrame.iterrows():
-    #         if value['tokenName'] == 'keyword' and value['attributeValue'] == string:
-    #             return value['id'], value['tokenName'], value['attributeValue']
-    #     return None, None, None
+    def state_60(self, *argv):
+        if argv:
+            self.identifiers = argv[0]
+        char = self.fp.nextChar()
+        if char == 'eof':
+            tokenId, tokenName, tokenAttributeValue = LexicalAnalysis.checkToken(
+                self)
+            if tokenId:
+                print("'<{},{}>'".format(tokenName, tokenAttributeValue))
+            else:
+                addTokenBool = LexicalAnalysis.addIdentifiers(self)
+                if addTokenBool:
+                    print("'<identifiers,{}>'".format(self.identifiers))
+                else:
+                    print('error to save token in token csv file')
+            print("'<eof>'")
+        elif re.search('[A-Z]|[a-z]|[0-9]', char):
+            self.identifiers = self.identifiers + char
+            return LexicalAnalysis.switchState(self, 60)
+        else:
+            return LexicalAnalysis.switchState(self, 61)
+            
 
-    # def addIdentifiers(self):
-    #     string = self.identifiers
-    #     tokenDataFrame = pd.read_csv('token.csv', index_col=0)
-    #     tokenDataFrame = tokenDataFrame.append({'id': uuid1(),
-    #                                             'tokenName': 'identifier',
-    #                                             'attributeValue': string},
-    #                                            ignore_index=True)
-    #     tokenDataFrame.to_csv('token.csv')
-    #     return True
+    def state_61(self):
+        self.fp.previousChar()
+        tokenId, tokenName, tokenAttributeValue = LexicalAnalysis.checkToken(
+            self)
+        if tokenId:
+            print("'<{},{}>'".format(tokenName, tokenAttributeValue))
+        else:
+            addTokenBool = LexicalAnalysis.addIdentifiers(self)
+            if addTokenBool:
+                print("'<identifiers,{}>'".format(self.identifiers))
+            else:
+                print('error to save token in token csv file')
+        return LexicalAnalysis.switchState(self, 0)
 
-    # def state_9(self, *argv):
-    #     if argv:
-    #         self.identifiers = argv[0]
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         tokenId, tokenName, tokenAttributeValue = LexicalAnalysis.checkToken(
-    #             self)
-    #         if tokenId:
-    #             print("'<{},{}>'".format(tokenName, tokenAttributeValue))
-    #         else:
-    #             addTokenBool = LexicalAnalysis.addIdentifiers(self)
-    #             if addTokenBool:
-    #                 print("'<identifiers,{}>'".format(self.identifiers))
-    #             else:
-    #                 print('error to save token in token csv file')
-    #         print("'<eof>'")
-    #     elif re.search('[A-Z]|[a-z]|[0-9]', char):
-    #         self.identifiers = self.identifiers + char
-    #         return LexicalAnalysis.switchState(self, 9)
-    #     else:
-    #         self.fp.previousChar()
-    #         tokenId, tokenName, tokenAttributeValue = LexicalAnalysis.checkToken(
-    #             self)
-    #         if tokenId:
-    #             print("'<{},{}>'".format(tokenName, tokenAttributeValue))
-    #         else:
-    #             addTokenBool = LexicalAnalysis.addIdentifiers(self)
-    #             if addTokenBool:
-    #                 print("'<identifiers,{}>'".format(self.identifiers))
-    #             else:
-    #                 print('error to save token in token csv file')
-    #         return LexicalAnalysis.switchState(self, 0)
 
