@@ -45,8 +45,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 44)
         elif char == ' ':
             return LexicalAnalysis.switchState(self, 48)
-        # elif char == ';':
-        #     return LexicalAnalysis.switchState(self, 25)
+        elif char == ';':
+            return LexicalAnalysis.switchState(self, 50)
         # elif char == '(':
         #     return LexicalAnalysis.switchState(self, 26)
         # elif char == ')':
@@ -370,6 +370,19 @@ class LexicalAnalysis:
         print("'<delim>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
+        
+    def state_50(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,semicolon>'")
+            print("'<eof>'")
+        else:
+            return LexicalAnalysis.switchState(self, 51)
+    
+    def state_51(self):
+        print("'<punctuation,semicolon>'")
+        self.fp.previousChar()
+        return LexicalAnalysis.switchState(self, 0)
     
 
     
@@ -427,16 +440,6 @@ class LexicalAnalysis:
     #                 print('error to save token in token csv file')
     #         return LexicalAnalysis.switchState(self, 0)
 
-
-    # def state_25(self):
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         print("'<punctuation,semicolon>'")
-    #         print("'<eof>'")
-    #     else:
-    #         print("'<punctuation,semicolon>'")
-    #         self.fp.previousChar()
-    #         return LexicalAnalysis.switchState(self, 0)
 
     # def state_26(self):
     #     char = self.fp.nextChar()
