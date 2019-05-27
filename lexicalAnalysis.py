@@ -33,6 +33,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 25)
         elif char == '!':
             return LexicalAnalysis.switchState(self, 28)
+        elif char == '&':
+            return LexicalAnalysis.switchState(self, 31)
         # elif char == ' ':
         #     return LexicalAnalysis.switchState(self, 22)
         # elif char == ';':
@@ -238,6 +240,34 @@ class LexicalAnalysis:
         self.fp.previousChar()
         print("'<operator,NOT>'")
         return LexicalAnalysis.switchState(self, 0)
+
+    def state_31(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<operator,bitwiseAND>'")
+            print("'<eof>'")
+        elif char == '=':
+            return LexicalAnalysis.switchState(self, 32)
+        elif char == '&':
+            return LexicalAnalysis.switchState(self, 33)
+        else:
+            return LexicalAnalysis.switchState(self, 34)
+
+    def state_32(self):
+        print("'<operator,ANDE>'")
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_33(self):
+        print("'<operator,and>'")
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_34(self):
+        self.fp.previousChar()
+        print("'<operator,bitwiseAND>'")
+        return LexicalAnalysis.switchState(self, 0)
+    
+
+    
         
 
 
