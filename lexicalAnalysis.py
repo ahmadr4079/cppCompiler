@@ -59,6 +59,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 0)
         elif re.search('[A-Z]|[a-z]', char):
             return LexicalAnalysis.switchState(self, 60, char)
+        elif re.search('[0-9]',char):
+            return LexicalAnalysis.switchState(self, 62, char)
 
     def state_1(self):
         char = self.fp.nextChar()
@@ -479,7 +481,7 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 60)
         else:
             return LexicalAnalysis.switchState(self, 61)
-            
+
 
     def state_61(self):
         self.fp.previousChar()
@@ -493,6 +495,23 @@ class LexicalAnalysis:
                 print("'<identifiers,{}>'".format(self.identifiers))
             else:
                 print('error to save token in token csv file')
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_62(self,*argv):
+        if argv:
+            self.number = argv[0]
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<number,{}>'".format(self.number))
+        elif re.search('[0-9]',char):
+            self.number = self.number + char
+            return LexicalAnalysis.switchState(self,62)
+        else:
+            return LexicalAnalysis.switchState(self,63)
+    
+    def state_63(self):
+        self.fp.previousChar()
+        print("'<number,{}>'".format(self.number))
         return LexicalAnalysis.switchState(self, 0)
 
 
