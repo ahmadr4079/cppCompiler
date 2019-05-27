@@ -47,14 +47,14 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 48)
         elif char == ';':
             return LexicalAnalysis.switchState(self, 50)
-        # elif char == '(':
-        #     return LexicalAnalysis.switchState(self, 26)
-        # elif char == ')':
-        #     return LexicalAnalysis.switchState(self, 27)
-        # elif char == '{':
-        #     return LexicalAnalysis.switchState(self, 28)
-        # elif char == '}':
-        #     return LexicalAnalysis.switchState(self, 29)
+        elif char == '(':
+            return LexicalAnalysis.switchState(self, 52)
+        elif char == ')':
+            return LexicalAnalysis.switchState(self, 54)
+        elif char == '{':
+            return LexicalAnalysis.switchState(self, 56)
+        elif char == '}':
+            return LexicalAnalysis.switchState(self, 58)
         # elif re.search('[A-Z]|[a-z]', char):
         #     return LexicalAnalysis.switchState(self, 9, char)
 
@@ -383,7 +383,58 @@ class LexicalAnalysis:
         print("'<punctuation,semicolon>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
+
+    def state_52(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,leftparantheses>'")
+            print("'<eof>'")
+        else:
+            return LexicalAnalysis.switchState(self, 53)
+            
+    def state_53(self):
+        print("'<punctuation,leftparantheses>'")
+        self.fp.previousChar()
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_54(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,rightparantheses>'")
+            print("'<eof>'")
+        else:
+            return LexicalAnalysis.switchState(self, 55)
+
+    def state_55(self):
+        print("'<punctuation,rightparantheses>'")
+        self.fp.previousChar()
+        return LexicalAnalysis.switchState(self, 0) 
     
+    def state_56(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,leftbracket>'")
+            print("'<eof>'")
+        else:
+            return LexicalAnalysis.switchState(self, 57)
+    
+    def state_57(self):
+        print("'<punctuation,leftbracket>'")
+        self.fp.previousChar()
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_58(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<punctuation,rightbracket>'")
+            print("'<eof>'")
+        else:
+            return LexicalAnalysis.switchState(self, 59)
+
+    def state_59(self):
+        print("'<punctuation,rightbracket>'")
+        self.fp.previousChar()
+        return LexicalAnalysis.switchState(self, 0)
 
     
         
@@ -440,43 +491,3 @@ class LexicalAnalysis:
     #                 print('error to save token in token csv file')
     #         return LexicalAnalysis.switchState(self, 0)
 
-
-    # def state_26(self):
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         print("'<punctuation,leftparantheses>'")
-    #         print("'<eof>'")
-    #     else:
-    #         print("'<punctuation,leftparantheses>'")
-    #         self.fp.previousChar()
-    #         return LexicalAnalysis.switchState(self, 0)
-
-    # def state_27(self):
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         print("'<punctuation,rightparantheses>'")
-    #         print("'<eof>'")
-    #     else:
-    #         print("'<punctuation,rightparantheses>'")
-    #         self.fp.previousChar()
-    #         return LexicalAnalysis.switchState(self, 0)
-
-    # def state_28(self):
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         print("'<punctuation,leftbracket>'")
-    #         print("'<eof>'")
-    #     else:
-    #         print("'<punctuation,leftbracket>'")
-    #         self.fp.previousChar()
-    #         return LexicalAnalysis.switchState(self, 0)
-
-    # def state_29(self):
-    #     char = self.fp.nextChar()
-    #     if char == 'eof':
-    #         print("'<punctuation,rightbracket>'")
-    #         print("'<eof>'")
-    #     else:
-    #         print("'<punctuation,rightbracket>'")
-    #         self.fp.previousChar()
-    #         return LexicalAnalysis.switchState(self, 0)
