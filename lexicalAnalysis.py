@@ -27,6 +27,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 15)
         elif char == '*':
             return LexicalAnalysis.switchState(self, 19)
+        elif char == '/':
+            return LexicalAnalysis.switchState(self, 22)
         # elif char == ' ':
         #     return LexicalAnalysis.switchState(self, 22)
         # elif char == ';':
@@ -174,6 +176,25 @@ class LexicalAnalysis:
     def state_21(self):
         self.fp.previousChar()
         print("'<operator,multiplication>'")
+        return LexicalAnalysis.switchState(self, 0)
+    
+    def state_22(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<operator,division>'")
+            print("'<eof>'")
+        elif char == '=':
+            return LexicalAnalysis.switchState(self, 23)
+        else:
+            return LexicalAnalysis.switchState(self, 24)
+
+    def state_23(self):
+        print("'<operator,DE>'")
+        return LexicalAnalysis.switchState(self, 0)
+    
+    def state_24(self):
+        self.fp.previousChar()
+        print("'<operator,division>'")
         return LexicalAnalysis.switchState(self, 0)
         
 
