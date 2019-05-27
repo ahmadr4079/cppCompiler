@@ -35,6 +35,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 28)
         elif char == '&':
             return LexicalAnalysis.switchState(self, 31)
+        elif char == '|':
+            return LexicalAnalysis.switchState(self, 35)
         # elif char == ' ':
         #     return LexicalAnalysis.switchState(self, 22)
         # elif char == ';':
@@ -264,6 +266,31 @@ class LexicalAnalysis:
     def state_34(self):
         self.fp.previousChar()
         print("'<operator,bitwiseAND>'")
+        return LexicalAnalysis.switchState(self, 0)
+    
+    def state_35(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<operator,bitwiseInsclusiveOR>'")
+            print("'<eof>'")
+        elif char == '|':
+            return LexicalAnalysis.switchState(self, 36)
+        elif char == '=':
+            return LexicalAnalysis.switchState(self, 37)
+        else:
+            return LexicalAnalysis.switchState(self, 38)
+    
+    def state_36(self):
+        print("'<operator,or>'")
+        return LexicalAnalysis.switchState(self, 0)
+    
+    def state_37(self):
+        print("'<operator,ORE>'")
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_38(self):
+        self.fp.previousChar()
+        print("'<operator,bitwiseInsclusiveOR>'")
         return LexicalAnalysis.switchState(self, 0)
     
 
