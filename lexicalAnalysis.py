@@ -41,6 +41,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 39)
         elif char == '^':
             return LexicalAnalysis.switchState(self, 41)
+        elif char == '~':
+            return LexicalAnalysis.switchState(self, 44)
         # elif char == ' ':
         #     return LexicalAnalysis.switchState(self, 22)
         # elif char == ';':
@@ -327,6 +329,19 @@ class LexicalAnalysis:
     def state_43(self):
         self.fp.previousChar()
         print("'<operator,XOR>'")
+        return LexicalAnalysis.switchState(self, 0)
+
+    def state_44(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            print("'<operator,NOT~>'")
+            print("'<eof>'")
+        else:
+            return LexicalAnalysis.switchState(self, 45)
+
+    def state_45(self):
+        self.fp.previousChar()
+        print("'<operator,NOT~>'")
         return LexicalAnalysis.switchState(self, 0)
     
 
