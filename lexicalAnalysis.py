@@ -6,6 +6,7 @@ from uuid import uuid1
 class LexicalAnalysis:
     def __init__(self, file):
         self.fp = file
+        self.tokens = list()
 
     # def for create switchState state
     def switchState(self, state, *argv):
@@ -14,7 +15,7 @@ class LexicalAnalysis:
     def state_0(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<eof>'")
+            self.tokens.append("'<eof>'")
         elif char == '<':
             return LexicalAnalysis.switchState(self, 1)
         elif char == '=':
@@ -65,8 +66,8 @@ class LexicalAnalysis:
     def state_1(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,LT>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,LT>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 2)
         elif char == '>':
@@ -77,42 +78,42 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 4)
 
     def state_2(self):
-        print("'<operator,LE>'")
+        self.tokens.append("'<operator,LE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_3(self):
-        print("'<operator,NE>'")
+        self.tokens.append("'<operator,NE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_4(self):
         self.fp.previousChar()
-        print("'<operator,LT>'")
+        self.tokens.append("'<operator,LT>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_5(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,EQ>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,EQ>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 6)
         else:
             return LexicalAnalysis.switchState(self, 7)
 
     def state_6(self):
-        print("'<operator,ET>'")
+        self.tokens.append("'<operator,ET>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_7(self):
         self.fp.previousChar()
-        print("'<operator,EQ>'")
+        self.tokens.append("'<operator,EQ>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_8(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,GT>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,GT>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 9)
         elif char == '>':
@@ -121,20 +122,20 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 10)
 
     def state_9(self):
-        print("'<operator,GE>''")
+        self.tokens.append("'<operator,GE>''")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_10(self):
         self.fp.previousChar()
-        print("'<operator,GT>'")
+        self.tokens.append("'<operator,GT>'")
         return LexicalAnalysis.switchState(self, 0)
 
 
     def state_11(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,addition>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,addition>'")
+            self.tokens.append("'<eof>'")
         elif char == '+':
             return LexicalAnalysis.switchState(self, 12)
         elif char == '=':
@@ -144,23 +145,23 @@ class LexicalAnalysis:
 
 
     def state_12(self):
-        print("'<operator,increment>'")
+        self.tokens.append("'<operator,increment>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_13(self):
-        print("'<operator,AE>'")
+        self.tokens.append("'<operator,AE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_14(self):
         self.fp.previousChar()
-        print("'<operator,addition>'")
+        self.tokens.append("'<operator,addition>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_15(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,subtraction>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,subtraction>'")
+            self.tokens.append("'<eof>'")
         elif char == '-':
             return LexicalAnalysis.switchState(self, 16)
         elif char == '=':
@@ -169,99 +170,99 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 18)
 
     def state_16(self):
-        print("'<operator,decrement>'")
+        self.tokens.append("'<operator,decrement>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_17(self):
-        print("'<operator,SE>'")
+        self.tokens.append("'<operator,SE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_18(self):
         self.fp.previousChar()
-        print("'<operator,subtraction>'")
+        self.tokens.append("'<operator,subtraction>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_19(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,multiplication>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,multiplication>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 20)
         else:
             return LexicalAnalysis.switchState(self, 21)
 
     def state_20(self):
-        print("'<operator,ME>'")
+        self.tokens.append("'<operator,ME>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_21(self):
         self.fp.previousChar()
-        print("'<operator,multiplication>'")
+        self.tokens.append("'<operator,multiplication>'")
         return LexicalAnalysis.switchState(self, 0)
     
     def state_22(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,division>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,division>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 23)
         else:
             return LexicalAnalysis.switchState(self, 24)
 
     def state_23(self):
-        print("'<operator,DE>'")
+        self.tokens.append("'<operator,DE>'")
         return LexicalAnalysis.switchState(self, 0)
     
     def state_24(self):
         self.fp.previousChar()
-        print("'<operator,division>'")
+        self.tokens.append("'<operator,division>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_25(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,modulo>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,modulo>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 26)
         else:
             return LexicalAnalysis.switchState(self, 27)
 
     def state_26(self):
-        print("'<operator,ME>'")
+        self.tokens.append("'<operator,ME>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_27(self):
         self.fp.previousChar()
-        print("'<operator,modulo>'")
+        self.tokens.append("'<operator,modulo>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_28(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,NOT>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,NOT>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 29)
         else:
             return LexicalAnalysis.switchState(self, 30)
 
     def state_29(self):
-        print("'<operator,NET>'")
+        self.tokens.append("'<operator,NET>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_30(self):
         self.fp.previousChar()
-        print("'<operator,NOT>'")
+        self.tokens.append("'<operator,NOT>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_31(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,bitwiseAND>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,bitwiseAND>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 32)
         elif char == '&':
@@ -270,23 +271,23 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 34)
 
     def state_32(self):
-        print("'<operator,ANDE>'")
+        self.tokens.append("'<operator,ANDE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_33(self):
-        print("'<operator,and>'")
+        self.tokens.append("'<operator,and>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_34(self):
         self.fp.previousChar()
-        print("'<operator,bitwiseAND>'")
+        self.tokens.append("'<operator,bitwiseAND>'")
         return LexicalAnalysis.switchState(self, 0)
     
     def state_35(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,bitwiseInsclusiveOR>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,bitwiseInsclusiveOR>'")
+            self.tokens.append("'<eof>'")
         elif char == '|':
             return LexicalAnalysis.switchState(self, 36)
         elif char == '=':
@@ -295,148 +296,148 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 38)
     
     def state_36(self):
-        print("'<operator,or>'")
+        self.tokens.append("'<operator,or>'")
         return LexicalAnalysis.switchState(self, 0)
     
     def state_37(self):
-        print("'<operator,ORE>'")
+        self.tokens.append("'<operator,ORE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_38(self):
         self.fp.previousChar()
-        print("'<operator,bitwiseInsclusiveOR>'")
+        self.tokens.append("'<operator,bitwiseInsclusiveOR>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_39(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,comma>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,comma>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 40)
 
     def state_40(self):
         self.fp.previousChar()
-        print("'<operator,comma>'")
+        self.tokens.append("'<operator,comma>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_41(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,XOR>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,XOR>'")
+            self.tokens.append("'<eof>'")
         elif char == '=':
             return LexicalAnalysis.switchState(self, 42)
         else:
             return LexicalAnalysis.switchState(self, 43)
 
     def state_42(self):
-        print("'<operator,XORE>'")
+        self.tokens.append("'<operator,XORE>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_43(self):
         self.fp.previousChar()
-        print("'<operator,XOR>'")
+        self.tokens.append("'<operator,XOR>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_44(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<operator,NOT~>'")
-            print("'<eof>'")
+            self.tokens.append("'<operator,NOT~>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 45)
 
     def state_45(self):
         self.fp.previousChar()
-        print("'<operator,NOT~>'")
+        self.tokens.append("'<operator,NOT~>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_46(self):
-        print("'<operator,SHL>'")
+        self.tokens.append("'<operator,SHL>'")
         return LexicalAnalysis.switchState(self, 0)
     
     def state_47(self):
-        print("'<operator,SHR>'")
+        self.tokens.append("'<operator,SHR>'")
         return LexicalAnalysis.switchState(self, 0)
 
     def state_48(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<delim>'")
-            print("'<eof>'")
+            self.tokens.append("'<delim>'")
+            self.tokens.append("'<eof>'")
         elif char == ' ':
             return LexicalAnalysis.switchState(self, 48)
         else:
             return LexicalAnalysis.switchState(self, 49)
     
     def state_49(self):
-        print("'<delim>'")
+        self.tokens.append("'<delim>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
         
     def state_50(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<punctuation,semicolon>'")
-            print("'<eof>'")
+            self.tokens.append("'<punctuation,semicolon>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 51)
     
     def state_51(self):
-        print("'<punctuation,semicolon>'")
+        self.tokens.append("'<punctuation,semicolon>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
 
     def state_52(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<punctuation,leftparantheses>'")
-            print("'<eof>'")
+            self.tokens.append("'<punctuation,leftparantheses>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 53)
             
     def state_53(self):
-        print("'<punctuation,leftparantheses>'")
+        self.tokens.append("'<punctuation,leftparantheses>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
 
     def state_54(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<punctuation,rightparantheses>'")
-            print("'<eof>'")
+            self.tokens.append("'<punctuation,rightparantheses>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 55)
 
     def state_55(self):
-        print("'<punctuation,rightparantheses>'")
+        self.tokens.append("'<punctuation,rightparantheses>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0) 
     
     def state_56(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<punctuation,leftbracket>'")
-            print("'<eof>'")
+            self.tokens.append("'<punctuation,leftbracket>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 57)
     
     def state_57(self):
-        print("'<punctuation,leftbracket>'")
+        self.tokens.append("'<punctuation,leftbracket>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
 
     def state_58(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<punctuation,rightbracket>'")
-            print("'<eof>'")
+            self.tokens.append("'<punctuation,rightbracket>'")
+            self.tokens.append("'<eof>'")
         else:
             return LexicalAnalysis.switchState(self, 59)
 
     def state_59(self):
-        print("'<punctuation,rightbracket>'")
+        self.tokens.append("'<punctuation,rightbracket>'")
         self.fp.previousChar()
         return LexicalAnalysis.switchState(self, 0)
 
@@ -468,14 +469,14 @@ class LexicalAnalysis:
             tokenId, tokenName, tokenAttributeValue = LexicalAnalysis.checkToken(
                 self)
             if tokenId:
-                print("'<{},{}>'".format(tokenName, tokenAttributeValue))
+                self.tokens.append("'<{},{}>'".format(tokenName, tokenAttributeValue))
             else:
                 addTokenBool = LexicalAnalysis.addIdentifiers(self)
                 if addTokenBool:
-                    print("'<identifiers,{}>'".format(self.identifiers))
+                    self.tokens.append("'<identifiers,{}>'".format(self.identifiers))
                 else:
-                    print('error to save token in token csv file')
-            print("'<eof>'")
+                    self.tokens.append('error to save token in token csv file')
+            self.tokens.append("'<eof>'")
         elif re.search('[A-Z]|[a-z]|[0-9]', char):
             self.identifiers = self.identifiers + char
             return LexicalAnalysis.switchState(self, 60)
@@ -488,13 +489,13 @@ class LexicalAnalysis:
         tokenId, tokenName, tokenAttributeValue = LexicalAnalysis.checkToken(
             self)
         if tokenId:
-            print("'<{},{}>'".format(tokenName, tokenAttributeValue))
+            self.tokens.append("'<{},{}>'".format(tokenName, tokenAttributeValue))
         else:
             addTokenBool = LexicalAnalysis.addIdentifiers(self)
             if addTokenBool:
-                print("'<identifiers,{}>'".format(self.identifiers))
+                self.tokens.append("'<identifiers,{}>'".format(self.identifiers))
             else:
-                print('error to save token in token csv file')
+                self.tokens.append('error to save token in token csv file')
         return LexicalAnalysis.switchState(self, 0)
 
     def state_62(self,*argv):
@@ -502,8 +503,8 @@ class LexicalAnalysis:
             self.number = argv[0]
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<number,{}>'".format(self.number))
-            print("'<eof>'")
+            self.tokens.append("'<number,{}>'".format(self.number))
+            self.tokens.append("'<eof>'")
         elif re.search('[0-9]',char):
             self.number = self.number + char
             return LexicalAnalysis.switchState(self,62)
@@ -518,14 +519,14 @@ class LexicalAnalysis:
     
     def state_63(self):
         self.fp.previousChar()
-        print("'<number,{}>'".format(self.number))
+        self.tokens.append("'<number,{}>'".format(self.number))
         return LexicalAnalysis.switchState(self, 0)
     
     def state_64(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<number,{}>'".format(self.number))
-            print("'<eof>'")
+            self.tokens.append("'<number,{}>'".format(self.number))
+            self.tokens.append("'<eof>'")
         elif re.search('[0-9]',char):
             self.number = self.number + char
             return LexicalAnalysis.switchState(self, 65)
@@ -535,8 +536,8 @@ class LexicalAnalysis:
     def state_65(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<number,{}>'".format(self.number))
-            print("'<eof>'")
+            self.tokens.append("'<number,{}>'".format(self.number))
+            self.tokens.append("'<eof>'")
         elif re.search('[0-9]',char):
             self.number = self.number + char
             return LexicalAnalysis.switchState(self, 65)
@@ -549,8 +550,8 @@ class LexicalAnalysis:
     def state_66(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<number,{}>'".format(self.number))
-            print("'<eof>'")
+            self.tokens.append("'<number,{}>'".format(self.number))
+            self.tokens.append("'<eof>'")
         elif char == '+' or char == '-':
             self.number = self.number + char
             return LexicalAnalysis.switchState(self, 67)
@@ -563,8 +564,8 @@ class LexicalAnalysis:
     def state_67(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<number,{}>'".format(self.number))
-            print("'<eof>'")
+            self.tokens.append("'<number,{}>'".format(self.number))
+            self.tokens.append("'<eof>'")
         elif re.search('[0-9]',char):
             self.number = self.number + char
             return LexicalAnalysis.switchState(self, 68)
@@ -574,8 +575,8 @@ class LexicalAnalysis:
     def state_68(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            print("'<number,{}>'".format(self.number))
-            print("'<eof>'")
+            self.tokens.append("'<number,{}>'".format(self.number))
+            self.tokens.append("'<eof>'")
         elif re.search('[0-9]',char):
             self.number = self.number + char
             return LexicalAnalysis.switchState(self, 68)
