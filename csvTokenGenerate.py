@@ -21,7 +21,7 @@ def generateTokenCsvFile():
         return True
     else:
         initialData = []
-        keywordFile = open('cPlusKeyword.txt','r')
+        keywordFile = open('cppKeyword.txt','r')
         for item in keywordFile:
             initialData.append([uuid1(),'keyword',item.split('\n')[0]])
         keywordFile.close()
