@@ -59,6 +59,8 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 58)
         elif char == '\n':
             return LexicalAnalysis.switchState(self, 0)
+        elif char == '#':
+            return LexicalAnalysis.switchState(self, 73)
         elif re.search('[A-Z]|[a-z]', char):
             return LexicalAnalysis.switchState(self, 60, char)
         elif re.search('[0-9]',char):
@@ -584,6 +586,19 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 68)
         else:
             return LexicalAnalysis.switchState(self, 63)
+
+    def state_73(self):
+        char = self.fp.nextChar()
+        if char == 'eof':
+            self.tokens.append(Token('operator','sharp'))
+            self.tokens.append(Token('eof'))
+        else:
+            return LexicalAnalysis.switchState(self, 74)
+    
+    def state_74(self):
+        self.tokens.append(Token('operator','sharp'))
+        self.fp.previousChar()
+        return LexicalAnalysis.switchState(self, 0)
 
 
 
