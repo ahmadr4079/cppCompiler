@@ -3,4 +3,3 @@ import sys
 
 
 compileObject = Compile('{}'.format(sys.argv[1]))
-compileObject.tokenListCompile()
