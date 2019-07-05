@@ -1,50 +1,73 @@
+from style import Style
+
 class SyntaxAnalysis:
+
     def __init__(self,tokenList):
         self.tokenList = tokenList
-        self.goal()
-    def goal(self):
+        self.stmt()
+
+    def match(self,tokenAttributeValue):
+        if(self.tokenList.token.attributeValue) == tokenAttributeValue:
+            print(Style.green('Match ')+Style.reset('token {} - {}'.format(self.tokenList.token,tokenAttributeValue)))
+            self.tokenList.nextToken()
+        else:
+            print(Style.red('Syntax Error ')+Style.reset('{} required.'.format(tokenAttributeValue)))
+
+    def stmt(self):
         self.tokenList.nextToken()
-        if (self.expr() == 'ERROR' or self.tokenList.token.tokenName != 'eof'):
-            print('error : unexpedted {}'.format(self.tokenList.token))
+        if(self.tokenList.token.tokenName == 'eof'):
+            return
+        if(self.tokenList.token.attributeValue == 'if'):
+            self.match('if')
+            self.match('leftparantheses')
+            self.expr()
+            self.match('rightparantheses')
+            self.stmt()
+        else:
+            self.expr()
+            self.match('semicolon')
+
     def expr(self):
-        if (self.term() == 'ERROR'):
+        expr_state = self.term()
+        if(expr_state == 'ERROR'):
             return 'ERROR'
         else:
             return self.expr_prime()
+
     def expr_prime(self):
         if(self.tokenList.token.attributeValue == 'addition'):
-            print('expected {} token'.format(self.tokenList.token))
-            self.tokenList.nextToken()
+            self.match('addition')
             return self.expr()
         elif(self.tokenList.token.attributeValue == 'subtraction'):
-            print('expected {} token'.format(self.tokenList.token))
-            self.tokenList.nextToken()
+            self.match('subtraction')
             return self.expr()
         else:
             return 'OK'
+
     def term(self):
-        if (self.factor() == 'ERROR'):
+        term_state = self.factor()
+        if(term_state == 'ERROR'):
             return 'ERROR'
         else:
-            return 'OK'
+            return self.term_prime()
+
     def term_prime(self):
         if(self.tokenList.token.attributeValue == 'multiplication'):
-            print('expected {} token'.format(self.tokenList.token))
-            self.tokenList.nextToken()
-            return self.expr()
+            self.match('multiplication')
+            return self.term()
         elif(self.tokenList.token.attributeValue == 'division'):
-            print('expected {} token'.format(self.tokenList.token))
-            self.tokenList.nextToken()
-            return self.expr()
+            self.match('division')
+            return self.term()
         else:
             return 'OK'
+
     def factor(self):
         if(self.tokenList.token.tokenName == 'identifier'):
-            print('expected {} token'.format(self.tokenList.token))
+            print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
             self.tokenList.nextToken()
             return 'OK'
         elif(self.tokenList.token.tokenName == 'number'):
-            print('expected {} token'.format(self.tokenList.token))
+            print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
             self.tokenList.nextToken()
             return 'OK'
         else:
