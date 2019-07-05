@@ -2,8 +2,9 @@ class TokenList:
 
     def __init__(self,list):
         self.list = list
-        self.pointer = -1
+        self.pointer = 0
         self.maxListIndex = len(list)
+        self.token = list[0]
 
     def printTokenList(self):
         for item in self.list:

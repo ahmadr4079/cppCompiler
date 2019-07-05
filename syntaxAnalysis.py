@@ -13,8 +13,14 @@ class SyntaxAnalysis:
         else:
             print(Style.red('Syntax Error ')+Style.reset('{} required.'.format(tokenAttributeValue)))
 
+    def matchFactor(self,tokenName):
+        if(self.tokenList.token.tokenName) == tokenName:
+            print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
+            self.tokenList.nextToken()
+        else:
+            print(Style.red('Pass Error ')+Style.reset('{} token.'.format(tokenAttributeValue)))
+
     def stmt(self):
-        self.tokenList.nextToken()
         if(self.tokenList.token.tokenName == 'eof'):
             return
         if(self.tokenList.token.attributeValue == 'if'):
@@ -23,9 +29,16 @@ class SyntaxAnalysis:
             self.expr()
             self.match('rightparantheses')
             self.stmt()
+        elif(self.tokenList.token.attributeValue == 'leftbracket'):
+            self.match('leftbracket')
+            self.stmt()
+            self.match('rightbracket')
         else:
             self.expr()
             self.match('semicolon')
+
+    def stmts(self):
+        self.stmt()
 
     def expr(self):
         expr_state = self.term()
@@ -63,12 +76,14 @@ class SyntaxAnalysis:
 
     def factor(self):
         if(self.tokenList.token.tokenName == 'identifier'):
-            print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
-            self.tokenList.nextToken()
+            # print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
+            # self.tokenList.nextToken()
+            self.matchFactor('identifier')
             return 'OK'
         elif(self.tokenList.token.tokenName == 'number'):
-            print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
-            self.tokenList.nextToken()
+            # print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
+            # self.tokenList.nextToken()
+            self.matchFactor('number')
             return 'OK'
         else:
             return 'ERROR'
