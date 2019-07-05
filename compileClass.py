@@ -13,6 +13,7 @@ class Compile:
         self.tokenListObject = TokenList(self.lexicalObject.tokens)
         self.showCode(fileCode=fileCode)
         self.tokenListCompile()
+        self.deleteDelimToken()
         SyntaxAnalysis(self.tokenListObject)
 
 
@@ -26,3 +27,8 @@ class Compile:
         print('Your code that written in {} :\n'.format(fileCode))
         print(file.read())
         print('-'*80)
+
+    def deleteDelimToken(self):
+        for item in self.tokenListObject.list:
+            if item.tokenName == 'delim':
+                self.tokenListObject.list.remove(item)
