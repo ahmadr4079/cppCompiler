@@ -29,6 +29,12 @@ class SyntaxAnalysis:
             self.expr()
             self.match('rightparantheses')
             self.stmt()
+        elif(self.tokenList.token.attributeValue == 'while'):
+            self.match('while')
+            self.match('leftparantheses')
+            self.expr()
+            self.match('rightparantheses')
+            self.stmt()
         elif(self.tokenList.token.attributeValue == 'leftbracket'):
             self.match('leftbracket')
             self.stmt()
