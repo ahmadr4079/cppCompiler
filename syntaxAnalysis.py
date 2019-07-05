@@ -35,6 +35,16 @@ class SyntaxAnalysis:
             self.expr()
             self.match('rightparantheses')
             self.stmt()
+        elif(self.tokenList.token.attributeValue == 'for'):
+            self.match('for')
+            self.match('leftparantheses')
+            self.optexpr()
+            self.match('semicolon')
+            self.optexpr()
+            self.match('semicolon')
+            self.optexpr()
+            self.match('rightparantheses')
+            self.stmt()
         elif(self.tokenList.token.attributeValue == 'leftbracket'):
             self.match('leftbracket')
             self.stmt()
@@ -42,6 +52,9 @@ class SyntaxAnalysis:
         else:
             self.expr()
             self.match('semicolon')
+
+    def optexpr(self):
+        self.expr()
 
     def stmts(self):
         self.stmt()
