@@ -13,12 +13,12 @@ class SyntaxAnalysis:
         else:
             print(Style.red('Syntax Error ')+Style.reset('{} required.'.format(tokenAttributeValue)))
 
-    def matchFactor(self,tokenName):
+    def matchFactor(self,tokenName,tokenNameNeed=None):
         if(self.tokenList.token.tokenName) == tokenName:
             print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
             self.tokenList.nextToken()
         else:
-            print(Style.red('Pass Error ')+Style.reset('{} token.'.format(tokenAttributeValue)))
+            print(Style.red('Pass Error ')+Style.reset('{} required.'.format(tokenNameNeed)))
 
     def stmt(self):
         if(self.tokenList.token.tokenName == 'eof'):
@@ -51,12 +51,13 @@ class SyntaxAnalysis:
             self.match('rightbracket')
         elif(self.tokenList.token.attributeValue == 'sharp'):
             self.match('sharp')
-            self.matchFactor('keyword')
+            self.matchFactor('keyword','include')
             self.match('LT')
             self.matchFactor('identifier')
             self.matchFactor('dot')
             self.matchFactor('identifier')
             self.match('GT')
+            self.stmt()
         else:
             self.expr()
             self.match('semicolon')
