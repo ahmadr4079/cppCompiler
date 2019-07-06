@@ -18,7 +18,10 @@ class SyntaxAnalysis:
             print(Style.green('Pass ')+Style.reset('token {}'.format(self.tokenList.token)))
             self.tokenList.nextToken()
         else:
-            print(Style.red('Pass Error ')+Style.reset('{} required.'.format(tokenNameNeed)))
+            if(tokenNameNeed):
+                print(Style.red('Pass Error ')+Style.reset('{} required.'.format(tokenNameNeed)))
+            else:
+                print(Style.red('Pass Error ')+Style.reset('{} required.'.format(tokenName)))
 
     def stmt(self):
         if(self.tokenList.token.tokenName == 'eof'):
