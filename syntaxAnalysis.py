@@ -53,6 +53,7 @@ class SyntaxAnalysis:
             self.match('leftbracket')
             self.stmts()
             self.match('rightbracket')
+            self.stmts()
         elif(self.tokenList.token.attributeValue == 'sharp'):
             self.match('sharp')
             self.matchFactor('keyword','include')
