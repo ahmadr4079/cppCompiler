@@ -1,4 +1,5 @@
 from style import Style
+import re
 
 class SyntaxAnalysis:
 
@@ -69,6 +70,14 @@ class SyntaxAnalysis:
             self.expr()
             self.match('rightparantheses')
             self.match('semicolon')
+        elif(re.search('int|float|double|void',self.tokenList.token.attributeValue)):
+            self.match(self.tokenList.token.attributeValue)
+            self.expr()
+            if(self.tokenList.token.attributeValue == 'leftparantheses'):
+                self.match('leftparantheses')
+                self.expr()
+                self.match('rightparantheses')
+                self.stmt()
         else:
             self.expr()
             self.match('semicolon')
@@ -207,10 +216,10 @@ class SyntaxAnalysis:
         elif(self.tokenList.token.tokenName == 'number'):
             self.matchFactor('number')
             return 'OK'
-        elif(self.tokenList.token.tokenName == '('):
-            self.match('(')
+        elif(self.tokenList.token.attributeValue == 'leftparantheses'):
+            self.match('leftparantheses')
             self.expr()
-            self.match(')')
+            self.match('rightparantheses')
             return 'OK'
         else:
             return 'ERROR'
