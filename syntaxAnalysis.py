@@ -61,6 +61,14 @@ class SyntaxAnalysis:
             self.matchFactor('identifier')
             self.match('GT')
             self.stmt()
+        elif(self.tokenList.token.attributeValue == 'do'):
+            self.match('do')
+            self.stmt()
+            self.match('while')
+            self.match('leftparantheses')
+            self.expr()
+            self.match('rightparantheses')
+            self.match('semicolon')
         else:
             self.expr()
             self.match('semicolon')
