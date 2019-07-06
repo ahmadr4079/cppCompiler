@@ -79,6 +79,10 @@ class SyntaxAnalysis:
                 self.expr()
                 self.match('rightparantheses')
                 self.stmt()
+        elif(self.tokenList.token.attributeValue == 'return'):
+            self.match('return')
+            self.expr()
+            self.match('semicolon')
         else:
             self.expr()
             self.match('semicolon')
