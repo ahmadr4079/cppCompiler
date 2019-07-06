@@ -47,8 +47,16 @@ class SyntaxAnalysis:
             self.stmt()
         elif(self.tokenList.token.attributeValue == 'leftbracket'):
             self.match('leftbracket')
-            self.stmt()
+            self.stmts()
             self.match('rightbracket')
+        elif(self.tokenList.token.attributeValue == 'sharp'):
+            self.match('sharp')
+            self.matchFactor('keyword')
+            self.match('LT')
+            self.matchFactor('identifier')
+            self.matchFactor('dot')
+            self.matchFactor('identifier')
+            self.match('GT')
         else:
             self.expr()
             self.match('semicolon')
