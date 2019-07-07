@@ -106,15 +106,11 @@ class SyntaxAnalysis:
             self.stmt()
         elif(self.tokenList.token.attributeValue == 'cout'):
             self.match('cout')
-            self.match('SHL')
             self.coutState()
-            self.match('semicolon')
             self.stmt()
         elif(self.tokenList.token.attributeValue == 'cin'):
             self.match('cin')
-            self.match('SHR')
             self.cinState()
-            self.match('semicolon')
             self.stmt()
         else:
             print(Style.red('Syntax Error'))
