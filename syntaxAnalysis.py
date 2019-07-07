@@ -81,6 +81,12 @@ class SyntaxAnalysis:
                 self.params()
                 self.match('rightparantheses')
                 self.stmt()
+            elif(self.tokenList.token.attributeValue == 'leftsqurebracket'):
+                self.match('leftsqurebracket')
+                self.matchFactor('number')
+                self.match('rightsqurebracket')
+                self.match('semicolon')
+                self.stmt()
             else:
                 self.match('EQ')
                 self.expr()
@@ -125,7 +131,8 @@ class SyntaxAnalysis:
         if(re.search('int|float|double',self.tokenList.token.attributeValue)):
             self.match(self.tokenList.token.attributeValue)
             self.matchFactor('identifier')
-            self.match('comma')
+            if(self.tokenList.token.attributeValue == 'comma'):
+                self.match('comma')
             self.params()
         else:
             return 'OK'
