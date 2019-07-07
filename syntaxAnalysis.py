@@ -9,20 +9,20 @@ class SyntaxAnalysis:
 
     def match(self,tokenAttributeValue):
         if(self.tokenList.token.attributeValue) == tokenAttributeValue:
-            print(Style.green('Line({}) Match '.format(self.tokenList.token.line))+Style.reset('token {} - {}'.format(self.tokenList.token,tokenAttributeValue)))
+            print(Style.green('Line({})-Match '.format(self.tokenList.token.line))+Style.reset('token ({}-{}) '.format(self.tokenList.token,tokenAttributeValue)))
             self.tokenList.nextToken()
         else:
-            print(Style.red('Line({}) Syntax Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenAttributeValue)))
+            print(Style.red('Line({})-Syntax Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenAttributeValue)))
 
     def matchFactor(self,tokenName,tokenNameNeed=None):
         if(self.tokenList.token.tokenName) == tokenName:
-            print(Style.green('Line({}) Pass '.format(self.tokenList.token.line))+Style.reset('token {}'.format(self.tokenList.token)))
+            print(Style.green('Line({})-Pass '.format(self.tokenList.token.line))+Style.reset('token {}'.format(self.tokenList.token)))
             self.tokenList.nextToken()
         else:
             if(tokenNameNeed):
-                print(Style.red('Line({}) Pass Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenNameNeed)))
+                print(Style.red('Line({})-Pass Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenNameNeed)))
             else:
-                print(Style.red('Line({}) Pass Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenName)))
+                print(Style.red('Line({})-Pass Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenName)))
 
     def stmt(self):
         if(self.tokenList.token.tokenName == 'eof'):
