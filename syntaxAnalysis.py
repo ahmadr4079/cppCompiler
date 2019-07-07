@@ -73,19 +73,17 @@ class SyntaxAnalysis:
             self.match('semicolon')
         elif(re.search('int|float|double|void',self.tokenList.token.attributeValue)):
             self.match(self.tokenList.token.attributeValue)
+            self.matchFactor('identifier')
+            self.match('EQ')
             self.expr()
-            if(self.tokenList.token.attributeValue == 'leftparantheses'):
-                self.match('leftparantheses')
-                self.expr()
-                self.match('rightparantheses')
-                self.stmt()
+            self.match('semicolon')
         elif(self.tokenList.token.attributeValue == 'return'):
             self.match('return')
             self.expr()
             self.match('semicolon')
         elif(self.tokenList.token.tokenName == 'identifier'):
             self.match('identifier')
-            self.match('=')
+            self.match('EQ')
             self.expr()
             self.match('semicolon')
         else:
