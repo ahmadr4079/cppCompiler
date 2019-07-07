@@ -9,3 +9,5 @@ class Style():
     white = lambda x: '\033[37m' + str(x)
     underline = lambda x: '\033[4m' + str(x)
     reset = lambda x: '\033[0m' + str(x)
+    bold = lambda x: '\033[1m' + str(x)
+    customHeader = lambda x: '\033[0;30;46m' + str(x) + '\033[0m'
