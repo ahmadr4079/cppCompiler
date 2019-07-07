@@ -463,11 +463,13 @@ class LexicalAnalysis:
 
     def addIdentifiers(self):
         string = self.identifiers
+        line = self.lineChar
         tokenDataFrame = pd.read_csv('token.csv', index_col=0)
         tokenId = uuid1()
         tokenDataFrame = tokenDataFrame.append({'id': tokenId,
                                                 'tokenName': 'identifier',
-                                                'attributeValue': string},
+                                                'attributeValue': string,
+                                                'line':line},
                                                ignore_index=True)
         tokenDataFrame.to_csv('token.csv')
         return True,tokenId,'identifier',string

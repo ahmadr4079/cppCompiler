@@ -12,22 +12,21 @@ def generateTokenCsvFile():
         initialData = []
         keywordFile = open('cppKeyword.txt','r')
         for item in keywordFile:
-            initialData.append([uuid1(),'keyword',item.split('\n')[0]])
+            initialData.append([uuid1(),'keyword',item.split('\n')[0],None])
         keywordFile.close()
 
-        dataFrameToken = pd.DataFrame(data=initialData,columns=['id','tokenName','attributeValue'])
+        dataFrameToken = pd.DataFrame(data=initialData,columns=['id','tokenName','attributeValue','line'])
         dataFrameToken.to_csv('token.csv')
-        
+
         return True
     else:
         initialData = []
         keywordFile = open('cppKeyword.txt','r')
         for item in keywordFile:
-            initialData.append([uuid1(),'keyword',item.split('\n')[0]])
+            initialData.append([uuid1(),'keyword',item.split('\n')[0],None])
         keywordFile.close()
 
-        dataFrameToken = pd.DataFrame(data=initialData,columns=['id','tokenName','attributeValue'])
+        dataFrameToken = pd.DataFrame(data=initialData,columns=['id','tokenName','attributeValue','line'])
         dataFrameToken.to_csv('token.csv')
 
         return True
-
