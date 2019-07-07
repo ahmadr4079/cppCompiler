@@ -59,8 +59,9 @@ class SyntaxAnalysis:
             self.matchFactor('keyword','include')
             self.match('LT')
             self.matchFactor('identifier')
-            self.matchFactor('dot')
-            self.matchFactor('identifier')
+            if(self.tokenList.token.tokenName == 'dot'):
+                self.matchFactor('dot')
+                self.matchFactor('identifier')
             self.match('GT')
             self.stmt()
         elif(self.tokenList.token.attributeValue == 'do'):
@@ -103,6 +104,18 @@ class SyntaxAnalysis:
             self.expr()
             self.match('semicolon')
             self.stmt()
+        elif(self.tokenList.token.attributeValue == 'cout'):
+            self.match('cout')
+            self.match('SHL')
+            self.coutState()
+            self.match('semicolon')
+            self.stmt()
+        elif(self.tokenList.token.attributeValue == 'cin'):
+            self.match('cin')
+            self.match('SHR')
+            self.cinState()
+            self.match('semicolon')
+            self.stmt()
         else:
             print(Style.red('Syntax Error'))
 
@@ -120,6 +133,25 @@ class SyntaxAnalysis:
             self.params()
         else:
             return 'OK'
+
+    def coutState(self):
+        if(self.tokenList.token.attributeValue == 'SHL'):
+            self.match('SHL')
+            self.expr()
+            self.coutState()
+            self.match('semicolon')
+        else:
+            return 'OK'
+
+    def cinState(self):
+        if(self.tokenList.token.attributeValue == 'SHR'):
+            self.match('SHR')
+            self.expr()
+            self.cinState()
+            self.match('semicolon')
+        else:
+            return 'OK'
+
 
 
     """state for increasing precedence from expr B ... F factor"""
