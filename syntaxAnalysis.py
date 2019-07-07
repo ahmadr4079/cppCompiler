@@ -71,31 +71,55 @@ class SyntaxAnalysis:
             self.expr()
             self.match('rightparantheses')
             self.match('semicolon')
-        elif(re.search('int|float|double|void',self.tokenList.token.attributeValue)):
+            self.stmt()
+        elif(re.search('int|float|double',self.tokenList.token.attributeValue)):
             self.match(self.tokenList.token.attributeValue)
             self.matchFactor('identifier')
-            self.match('EQ')
-            self.expr()
-            self.match('semicolon')
+            if(self.tokenList.token.attributeValue == 'leftparantheses'):
+                self.match('leftparantheses')
+                self.params()
+                self.match('rightparantheses')
+                self.stmt()
+            else:
+                self.match('EQ')
+                self.expr()
+                self.match('semicolon')
+                self.stmt()
+        elif(self.tokenList.token.attributeValue == 'void'):
+            self.match('void')
+            self.matchFactor('identifier')
+            self.match('leftparantheses')
+            self.params()
+            self.match('rightparantheses')
+            self.stmt()
         elif(self.tokenList.token.attributeValue == 'return'):
             self.match('return')
             self.expr()
             self.match('semicolon')
+            self.stmt()
         elif(self.tokenList.token.tokenName == 'identifier'):
             self.match('identifier')
             self.match('EQ')
             self.expr()
             self.match('semicolon')
+            self.stmt()
         else:
             print(Style.red('Syntax Error'))
-
-
 
     def optexpr(self):
         self.expr()
 
     def stmts(self):
         self.stmt()
+
+    def params(self):
+        if(re.search('int|float|double',self.tokenList.token.attributeValue)):
+            self.match(self.tokenList.token.attributeValue)
+            self.matchFactor('identifier')
+            self.match('comma')
+            self.params()
+        else:
+            return 'OK'
 
 
     """state for increasing precedence from expr B ... F factor"""
