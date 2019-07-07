@@ -83,9 +83,15 @@ class SyntaxAnalysis:
             self.match('return')
             self.expr()
             self.match('semicolon')
-        else:
+        elif(self.tokenList.token.tokenName == 'identifier'):
+            self.match('identifier')
+            self.match('=')
             self.expr()
             self.match('semicolon')
+        else:
+            print(Style.red('Syntax Error'))
+
+
 
     def optexpr(self):
         self.expr()
