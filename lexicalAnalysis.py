@@ -242,7 +242,7 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 27)
 
     def state_26(self):
-        self.tokens.append(Token('operator','ME',line=self.lineChar))
+        self.tokens.append(Token('operator','moduloE',line=self.lineChar))
         return LexicalAnalysis.switchState(self, 0)
 
     def state_27(self):

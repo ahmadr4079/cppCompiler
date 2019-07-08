@@ -176,7 +176,7 @@ class SyntaxAnalysis:
 
 
     """state for increasing precedence
-    A) =
+    A) = *= /= %= &= ^= |=
     I) ||
     J) &&
     K) |
@@ -200,6 +200,24 @@ class SyntaxAnalysis:
     def expr_prime(self):
         if(self.tokenList.token.attributeValue == 'EQ'):
             self.match('EQ')
+            return self.expr()
+        if(self.tokenList.token.attributeValue == 'ME'):
+            self.match('ME')
+            return self.expr()
+        if(self.tokenList.token.attributeValue == 'DE'):
+            self.match('DE')
+            return self.expr()
+        if(self.tokenList.token.attributeValue == 'moduloE'):
+            self.match('moduloE')
+            return self.expr()
+        if(self.tokenList.token.attributeValue == 'ANDE'):
+            self.match('ANDE')
+            return self.expr()
+        if(self.tokenList.token.attributeValue == 'bitwiseInsclusiveANDE'):
+            self.match('bitwiseInsclusiveANDE')
+            return self.expr()
+        if(self.tokenList.token.attributeValue == 'ORE'):
+            self.match('ORE')
             return self.expr()
         else:
             return 'OK'
