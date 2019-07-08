@@ -297,7 +297,7 @@ class LexicalAnalysis:
     def state_35(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            self.tokens.append(Token('operator','bitwiseInsclusiveOR',line=self.lineChar))
+            self.tokens.append(Token('operator','bitwiseOR',line=self.lineChar))
             self.tokens.append(Token('eof',line=self.lineChar))
         elif char == '|':
             return LexicalAnalysis.switchState(self, 36)
@@ -316,7 +316,7 @@ class LexicalAnalysis:
 
     def state_38(self):
         self.fp.previousChar()
-        self.tokens.append(Token('operator','bitwiseInsclusiveOR',line=self.lineChar))
+        self.tokens.append(Token('operator','bitwiseOR',line=self.lineChar))
         return LexicalAnalysis.switchState(self, 0)
 
     def state_39(self):
@@ -335,7 +335,7 @@ class LexicalAnalysis:
     def state_41(self):
         char = self.fp.nextChar()
         if char == 'eof':
-            self.tokens.append(Token('operator','XOR',line=self.lineChar))
+            self.tokens.append(Token('operator','bitwiseInsclusiveAND',line=self.lineChar))
             self.tokens.append(Token('eof',line=self.lineChar))
         elif char == '=':
             return LexicalAnalysis.switchState(self, 42)
@@ -343,12 +343,12 @@ class LexicalAnalysis:
             return LexicalAnalysis.switchState(self, 43)
 
     def state_42(self):
-        self.tokens.append(Token('operator','XORE',line=self.lineChar))
+        self.tokens.append(Token('operator','bitwiseInsclusiveANDE',line=self.lineChar))
         return LexicalAnalysis.switchState(self, 0)
 
     def state_43(self):
         self.fp.previousChar()
-        self.tokens.append(Token('operator','XOR',line=self.lineChar))
+        self.tokens.append(Token('operator','bitwiseInsclusiveAND',line=self.lineChar))
         return LexicalAnalysis.switchState(self, 0)
 
     def state_44(self):
