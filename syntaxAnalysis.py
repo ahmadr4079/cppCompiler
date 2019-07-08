@@ -25,20 +25,24 @@ class SyntaxAnalysis:
                 print(Style.red('Line({})-Pass Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenName)))
 
     def stmt(self):
+        #grammer rule stmt --> eof
         if(self.tokenList.token.tokenName == 'eof'):
             return
+        #grammer rule stmt --> if ( expr ) stmt
         if(self.tokenList.token.attributeValue == 'if'):
             self.match('if')
             self.match('leftparantheses')
             self.expr()
             self.match('rightparantheses')
             self.stmt()
+        #grammer rule stmt --> while ( expr ) stmt
         elif(self.tokenList.token.attributeValue == 'while'):
             self.match('while')
             self.match('leftparantheses')
             self.expr()
             self.match('rightparantheses')
             self.stmt()
+        #grammer rule stmt --> for ( optexpr; optexpr; optexpr ) stmt
         elif(self.tokenList.token.attributeValue == 'for'):
             self.match('for')
             self.match('leftparantheses')
@@ -49,14 +53,16 @@ class SyntaxAnalysis:
             self.optexpr()
             self.match('rightparantheses')
             self.stmt()
+        #grammer rule stmt --> { stmts } stmts
         elif(self.tokenList.token.attributeValue == 'leftbracket'):
             self.match('leftbracket')
             self.stmts()
             self.match('rightbracket')
-            self.stmts()
+            self.stmt()
+        #grammer rule stmt --> # include < identifier .identifier? > stmt
         elif(self.tokenList.token.attributeValue == 'sharp'):
             self.match('sharp')
-            self.matchFactor('keyword','include')
+            self.match('include')
             self.match('LT')
             self.matchFactor('identifier')
             if(self.tokenList.token.tokenName == 'dot'):
@@ -64,6 +70,7 @@ class SyntaxAnalysis:
                 self.matchFactor('identifier')
             self.match('GT')
             self.stmt()
+        #grammer rule stmt --> do stmt while ( expr ); stmt
         elif(self.tokenList.token.attributeValue == 'do'):
             self.match('do')
             self.stmt()
@@ -73,6 +80,8 @@ class SyntaxAnalysis:
             self.match('rightparantheses')
             self.match('semicolon')
             self.stmt()
+        #grammer rule stmt --> type identifier ( params ) stmt
+        #grammer rule stmt --> type identifier [ number ]; stmts
         elif(re.search('int|float|double',self.tokenList.token.attributeValue)):
             self.match(self.tokenList.token.attributeValue)
             self.matchFactor('identifier')
@@ -92,6 +101,7 @@ class SyntaxAnalysis:
                 self.expr()
                 self.match('semicolon')
                 self.stmt()
+        #grammer rule stmt -->  void identifier ( params ) stmt
         elif(self.tokenList.token.attributeValue == 'void'):
             self.match('void')
             self.matchFactor('identifier')
@@ -99,21 +109,25 @@ class SyntaxAnalysis:
             self.params()
             self.match('rightparantheses')
             self.stmt()
+        #grammer rule stmt --> return expr ; stmt
         elif(self.tokenList.token.attributeValue == 'return'):
             self.match('return')
             self.expr()
             self.match('semicolon')
             self.stmt()
+        #grammer rule stmt --> identifier = expr ; stmt
         elif(self.tokenList.token.tokenName == 'identifier'):
             self.match('identifier')
             self.match('EQ')
             self.expr()
             self.match('semicolon')
             self.stmt()
+        #grammer rule stmt --> cout coutState stmt
         elif(self.tokenList.token.attributeValue == 'cout'):
             self.match('cout')
             self.coutState()
             self.stmt()
+        #grammer rule stmt --> cin cinState stmt
         elif(self.tokenList.token.attributeValue == 'cin'):
             self.match('cin')
             self.cinState()
@@ -126,7 +140,7 @@ class SyntaxAnalysis:
 
     def stmts(self):
         self.stmt()
-
+    #grammer rule params --> type identifier , params
     def params(self):
         if(re.search('int|float|double',self.tokenList.token.attributeValue)):
             self.match(self.tokenList.token.attributeValue)
@@ -136,7 +150,7 @@ class SyntaxAnalysis:
             self.params()
         else:
             return 'OK'
-
+    #grammer rule coutState --> << expr coutState ;
     def coutState(self):
         if(self.tokenList.token.attributeValue == 'SHL'):
             self.match('SHL')
@@ -145,7 +159,7 @@ class SyntaxAnalysis:
             self.match('semicolon')
         else:
             return 'OK'
-
+    #grammer rule cinState --> >> expr cinState ;
     def cinState(self):
         if(self.tokenList.token.attributeValue == 'SHR'):
             self.match('SHR')
