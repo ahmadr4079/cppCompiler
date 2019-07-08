@@ -7,8 +7,8 @@ class TokenList:
         self.token = list[0]
 
     def printTokenList(self):
-        for item in self.list:
-            print(item)
+        for i,j in enumerate(self.list):
+            print('{}) {}'.format(i+1,j))
 
     def nextToken(self):
         self.pointer = self.pointer + 1
