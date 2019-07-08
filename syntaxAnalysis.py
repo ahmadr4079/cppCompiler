@@ -98,8 +98,16 @@ class SyntaxAnalysis:
                 self.match('leftsqurebracket')
                 self.matchFactor('number')
                 self.match('rightsqurebracket')
-                self.match('semicolon')
-                self.stmt()
+                if(self.tokenList.token.attributeValue == 'EQ'):
+                    self.match('EQ')
+                    self.match('leftbracket')
+                    self.arrayNumber()
+                    self.match('rightbracket')
+                    self.match('semicolon')
+                    self.stmt()
+                else:
+                    self.match('semicolon')
+                    self.stmt()
             elif(self.tokenList.token.attributeValue == 'EQ'):
                 self.match('EQ')
                 self.expr()
@@ -157,6 +165,16 @@ class SyntaxAnalysis:
             self.params()
         else:
             return 'OK'
+
+    #grammer rule arrayNumber --> number , arrayNumber
+    def arrayNumber(self):
+        if(self.tokenList.token.tokenName == 'number'):
+            self.matchFactor('number')
+            self.match('comma')
+            self.arrayNumber()
+        else:
+            return 'OK'
+
     #grammer rule coutState --> << expr coutState ;
     def coutState(self):
         if(self.tokenList.token.attributeValue == 'SHL'):
