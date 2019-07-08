@@ -100,9 +100,12 @@ class SyntaxAnalysis:
                 self.match('rightsqurebracket')
                 self.match('semicolon')
                 self.stmt()
-            else:
+            elif(self.tokenList.token.attributeValue == 'EQ'):
                 self.match('EQ')
                 self.expr()
+                self.match('semicolon')
+                self.stmt()
+            else:
                 self.match('semicolon')
                 self.stmt()
         #grammer rule stmt -->  void identifier ( params ) stmt
