@@ -175,10 +175,22 @@ class SyntaxAnalysis:
 
 
 
-    """state for increasing precedence from expr B ... F factor"""
-    #grammer rule expr --> B expr_prime
+    """state for increasing precedence
+    A) =
+    I) ||
+    J) &&
+    K) |
+    L) ^
+    M) &
+    B) == !=
+    C) < <= > >=
+    D) << >>
+    E) + -
+    F) * / %
+    H) ++ --"""
+    #grammer rule expr --> I expr_prime
     def expr(self):
-        expr_state = self.B()
+        expr_state = self.I()
         if(expr_state == 'ERROR'):
             return 'ERROR'
         else:
@@ -189,6 +201,86 @@ class SyntaxAnalysis:
         if(self.tokenList.token.attributeValue == 'EQ'):
             self.match('EQ')
             return self.expr()
+        else:
+            return 'OK'
+
+    #grammer rule I --> J I_prime
+    def I(self):
+        I_state = self.J()
+        if(I_state == 'ERROR'):
+            return 'ERROR'
+        else:
+            return self.I_prime()
+
+    #grammer rule I_prime --> || I | epsilon
+    def I_prime(self):
+        if(self.tokenList.token.attributeValue == 'or'):
+            self.match('or')
+            return self.I()
+        else:
+            return 'OK'
+
+    #grammer rule J --> K J_prime
+    def J(self):
+        J_state = self.K()
+        if(J_state == 'ERROR'):
+            return 'ERROR'
+        else:
+            return self.J_prime()
+
+    #grammer rule J_prime --> && J | epsilon
+    def J_prime(self):
+        if(self.tokenList.token.attributeValue == 'and'):
+            self.match('and')
+            return self.J()
+        else:
+            return 'OK'
+
+    #grammer rule K --> L K_prime
+    def K(self):
+        K_state = self.L()
+        if(K_state == 'ERROR'):
+            return 'ERROR'
+        else:
+            return self.K_prime()
+
+    #grammer rule K_prime --> | K | epsilon
+    def K_prime(self):
+        if(self.tokenList.token.attributeValue == 'bitwiseOR'):
+            self.match('bitwiseOR')
+            return self.K()
+        else:
+            return 'OK'
+
+    #grammer rule L --> M L_prime
+    def L(self):
+        L_state = self.M()
+        if(L_state == 'ERROR'):
+            return 'ERROR'
+        else:
+            return self.L_prime()
+
+    #grammer rule L_prime --> ^ L | epsilon
+    def L_prime(self):
+        if(self.tokenList.token.attributeValue == 'bitwiseInsclusiveAND'):
+            self.match('bitwiseInsclusiveAND')
+            return self.L()
+        else:
+            return 'OK'
+
+    #grammer rule M --> B M_prime
+    def M(self):
+        M_state = self.B()
+        if(M_state == 'ERROR'):
+            return 'ERROR'
+        else:
+            return self.M_prime()
+
+    #grammer rule M_prime --> & M | epsilon
+    def M_prime(self):
+        if(self.tokenList.token.attributeValue == 'bitwiseAND'):
+            self.match('bitwiseAND')
+            return self.M()
         else:
             return 'OK'
 
@@ -290,6 +382,9 @@ class SyntaxAnalysis:
             return self.F()
         elif(self.tokenList.token.attributeValue == 'division'):
             self.match('division')
+            return self.F()
+        elif(self.tokenList.token.attributeValue == 'modulo'):
+            self.match('modulo')
             return self.F()
         else:
             return 'OK'
