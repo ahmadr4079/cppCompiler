@@ -34,6 +34,9 @@ class SyntaxAnalysis:
             self.match('leftparantheses')
             self.expr()
             self.match('rightparantheses')
+            self.match('leftbracket')
+            self.stmt()
+            self.match('rightbracket')
             self.stmt()
         #grammer rule stmt --> while ( expr ) stmt
         elif(self.tokenList.token.attributeValue == 'while'):
@@ -272,9 +275,9 @@ class SyntaxAnalysis:
         else:
             return 'OK'
 
-    #grammer rule F --> factor F_prime
+    #grammer rule F --> H F_prime
     def F(self):
-        F_state = self.factor()
+        F_state = self.H()
         if(F_state == 'ERROR'):
             return 'ERROR'
         else:
@@ -288,6 +291,25 @@ class SyntaxAnalysis:
         elif(self.tokenList.token.attributeValue == 'division'):
             self.match('division')
             return self.F()
+        else:
+            return 'OK'
+
+    #grammer rule H --> factor H_prime
+    def H(self):
+        H_state = self.factor()
+        if(H_state == 'ERROR'):
+            return 'ERROR'
+        else:
+            return self.H_prime()
+
+    #grammer rule H_prime --> ++ H | -- H | epsilon
+    def H_prime(self):
+        if(self.tokenList.token.attributeValue == 'increment'):
+            self.match('increment')
+            return self.H()
+        elif(self.tokenList.token.attributeValue == 'decrement'):
+            self.match('decrement')
+            return self.H()
         else:
             return 'OK'
 
