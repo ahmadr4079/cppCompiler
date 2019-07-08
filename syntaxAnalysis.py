@@ -9,7 +9,7 @@ class SyntaxAnalysis:
 
     def match(self,tokenAttributeValue):
         if(self.tokenList.token.attributeValue) == tokenAttributeValue:
-            print(Style.green('Line({})-Match '.format(self.tokenList.token.line))+Style.reset('token ({}-{}) '.format(self.tokenList.token,tokenAttributeValue)))
+            print(Style.green('Line({})-Match '.format(self.tokenList.token.line))+'token ({} {} {}) '.format(self.tokenList.token,Style.green('with'),tokenAttributeValue))
             self.tokenList.nextToken()
         else:
             print(Style.red('Line({})-Syntax Error '.format(self.tokenList.token.line))+Style.reset('{} required.'.format(tokenAttributeValue)))
@@ -81,7 +81,8 @@ class SyntaxAnalysis:
             self.match('semicolon')
             self.stmt()
         #grammer rule stmt --> type identifier ( params ) stmt
-        #grammer rule stmt --> type identifier [ number ]; stmts
+        #grammer rule stmt --> type identifier [ number ]; stmt
+        #grammer rule stmt --> type identifier = expr; stmt
         elif(re.search('int|float|double',self.tokenList.token.attributeValue)):
             self.match(self.tokenList.token.attributeValue)
             self.matchFactor('identifier')
@@ -117,7 +118,7 @@ class SyntaxAnalysis:
             self.stmt()
         #grammer rule stmt --> identifier = expr ; stmt
         elif(self.tokenList.token.tokenName == 'identifier'):
-            self.match('identifier')
+            self.matchFactor('identifier')
             self.match('EQ')
             self.expr()
             self.match('semicolon')
